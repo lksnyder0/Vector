@@ -5,29 +5,29 @@ class Vector:
 			self.__v = v
 		else:
 			raise VectorError("Not a valid Vector")
-	def __add__(self, u):
-		if type(u) is list:
+	def __add__(self, u): ## Vector + List || Vector + Vector
+		if type(u) is list: ## Vector + List
 			if len(u) == len(self):
 				return Vector([u[i] + self.getVector()[i] for i in range(len(self))])
 			else:
 				raise VectorError("Vectors are not in the same Rn space")
-		elif hasattr(u, "__name__") and u.__name__ == "Vector":
+		elif hasattr(u, "__name__") and u.__name__ == "Vector": ## Vector + Vector
 			if len(u) == len(self):
 				return Vector([u.getVector()[i] + self.getVector()[i] for i in range(len(self))])
 		else:
 			raise VectorError("Not a valid Vector")
-	def __radd__(self, u):
-		return self.__add__(u)
-	def __sub__(self, u):
-		if type(u) is list:
+	def __radd__(self, u):  ## List + Vector
+		return self.__add__(u)  ## Call __add__ because order doesn't matter
+	def __sub__(self, u):  ## Vector - List || Vector - Vector
+		if type(u) is list:  ## Vector - List
 			if len(u) == len(self):
 				return Vector([self.getVector()[i]-u[i] for i in range(len(self))])
 			else:
 				raise VectorError("Vectors are not in the same Rn space")
-		elif hasattr(u, "__name__") and u.__name__ == "Vector":
+		elif hasattr(u, "__name__") and u.__name__ == "Vector": ## Vector - Vector
 			if len(u) == len(self):
 				return Vector([self.getVector()[i] - u.getVector()[i] for i in range(len(self))])
-	def __rsub__(self, u):
+	def __rsub__(self, u):  ## List - Vector. Can't call __sub__ because order matters
 		if type(u) is list:
 			if len(u) == len(self):
 				return Vector([u[i] - self.getVector()[i] for i in range(len(self))])
@@ -35,13 +35,13 @@ class Vector:
 				raise VectorError("Vectors are not in the same Rn space")
 		else:
 			raise VectorError("Not a valid vector")
-	def __mul__(self, n):
+	def __mul__(self, n):  ## Vector * Int || Vector * Float
 		if type(n) is int or type(n) is float:
 			return Vector([i*n for i in self.__v])
-	def __rmul__(self, n):
-		return self.__mul__(n)
-	def __eq__(self, u):
-		if type(u) is list:
+	def __rmul__(self, n):  ## Int * Vector || Float * Vector
+		return self.__mul__(n)  ## Call __mul__ because order doesn't matter
+	def __eq__(self, u):  ## Vector == List || Vector == Vector || List == Vector
+		if type(u) is list:  ## Vector == List
 			if len(u) == len(self):
 				for i in range(len(self)):
 					if u[i] != self.getVector()[i]:
@@ -49,7 +49,7 @@ class Vector:
 				return True
 			else:
 				raise VectorError("Vectors are not in the same Rn space")
-		elif hasattr(u, "__name__") and u.__name__ == "Vector":
+		elif hasattr(u, "__name__") and u.__name__ == "Vector":  ## Vector == Vector
 			if len(u) == len(self):
 				for i in range(len(self)):
 					if u.getVector()[i] != self.getVector()[i]:
@@ -59,8 +59,8 @@ class Vector:
 				raise VectorError("Vectors are not in the same Rn space")
 		else:
 			raise VectorError("Not a valid vector")
-	def __ne__(self, u):
-		if type(u) is list:
+	def __ne__(self, u):  ## Vector != List || Vector != Vector || List != Vector
+		if type(u) is list:  ## Vector != List || List != Vector
 			if len(u) == len(self):
 				for i in range(len(self)):
 					if u[i] != self.getVector()[i]:
@@ -68,7 +68,7 @@ class Vector:
 				return False
 			else:
 				raise VectorError("Vectors are not in the same Rn space")
-		elif hasattr(u, "__name__") and u.__name__ == "Vector":
+		elif hasattr(u, "__name__") and u.__name__ == "Vector": ## Vector != Vector
 			if len(u) == len(self):
 				for i in range(len(self)):
 					if u.getVector()[i] != self.getVector()[i]:
@@ -98,7 +98,7 @@ class VectorError(Exception):
 	def __init__(self, error):
 		self.value = error
 	def __str__(self):
-		print repr(self.value)
+		return repr(self.value)
 
 
 if __name__ == "__main__":
@@ -169,6 +169,6 @@ if __name__ == "__main__":
 	print "2u + 4v:",
 	if 2*u + 4*v == [16, 16]: print "PASS"
 	else: print "FAIL"
-	
+
 	## These should error.
 	#v + 1
