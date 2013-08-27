@@ -166,7 +166,7 @@ if __name__ == "__main__":
 	else: print "FAIL"
 
 	## Multiplying vectors by an int and then adding the results
-	print "2u + 4v:",
+	print "2*u + 4*v:",
 	if 2*u + 4*v == [16, 16]: print "PASS"
 	else: print "FAIL"
 
